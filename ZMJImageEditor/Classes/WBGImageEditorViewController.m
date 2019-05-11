@@ -392,6 +392,12 @@ NSString * const kColorPanNotificaiton = @"kColorPanNotificaiton";
 ///发送
 - (IBAction)sendAction:(UIButton *)sender {
     
+    UIImage *clipedImage = [self buildClipImage];
+    if ([self.delegate respondsToSelector:@selector(imageEditor:didFinishEdittingWithImage:)]) {
+        [self.delegate imageEditor:self didFinishEdittingWithImage:clipedImage];
+    }
+    return;
+    
     [self buildClipImageShowHud:YES clipedCallback:^(UIImage *clipedImage) {
         if ([self.delegate respondsToSelector:@selector(imageEditor:didFinishEdittingWithImage:)]) {
             [self.delegate imageEditor:self didFinishEdittingWithImage:clipedImage];
@@ -725,13 +731,17 @@ NSString * const kColorPanNotificaiton = @"kColorPanNotificaiton";
 }
 
 - (void)buildClipImageShowHud:(BOOL)showHud clipedCallback:(void(^)(UIImage *clipedImage))clipedCallback {
-    if (showHud) {
-        //ShowBusyTextIndicatorForView(self.view, @"生成图片中...", nil);
-    }
+    
     
     CGFloat WS = self.imageView.width/ self.drawingView.width;
     CGFloat HS = self.imageView.height/ self.drawingView.height;
     
+    CGFloat viewToimgW = self.imageView.width/self.imageView.image.size.width;
+    CGFloat viewToimgH = self.imageView.height/self.imageView.image.size.height;
+    CGFloat drawX      = self.imageView.left/viewToimgW;
+    CGFloat drawY      = self.imageView.top/viewToimgH;
+
+    NSMutableArray *textArray = [self prepareAllTextImage:drawY];
     
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.imageView.image.size.width, self.imageView.image.size.height),
                                            NO,
@@ -740,14 +750,59 @@ NSString * const kColorPanNotificaiton = @"kColorPanNotificaiton";
     
     [self.imageView.image drawAtPoint:CGPointZero];
     
-    CGFloat viewToimgW = self.imageView.width/self.imageView.image.size.width;
-    CGFloat viewToimgH = self.imageView.height/self.imageView.image.size.height;
-    __unused CGFloat drawX = self.imageView.left/viewToimgW;
-    CGFloat drawY = self.imageView.top/viewToimgH;
-    
     [_drawingView.image drawInRect:CGRectMake(0, -drawY, self.imageView.image.size.width/WS, self.imageView.image.size.height/HS)];
     
+   
+    
     for (UIView *subV in _drawingView.subviews) {
+        
+        if ([subV isKindOfClass:[WBGTextToolView class]]) {
+            
+            continue;
+            
+            WBGTextToolView *textLabel = (WBGTextToolView *)subV;
+            //进入正常状态
+            [WBGTextToolView setInactiveTextView:textLabel];
+            
+            //生成图片
+            __unused UIView *tes = textLabel.archerBGView;
+            UIImage *textImg = [self.class screenshot:textLabel.archerBGView orientation:UIDeviceOrientationPortrait usePresentationLayer:YES];
+            CGFloat rotation = textLabel.archerBGView.layer.transformRotationZ;
+            textImg = [textImg imageRotatedByRadians:rotation];
+            
+            CGFloat selfRw = self.imageView.bounds.size.width / self.imageView.image.size.width;
+            CGFloat selfRh = self.imageView.bounds.size.height / self.imageView.image.size.height;
+            
+            CGFloat sw = textImg.size.width / selfRw;
+            CGFloat sh = textImg.size.height / selfRh;
+            
+            [textImg drawInRect:CGRectMake(textLabel.left/selfRw, (textLabel.top/selfRh) - drawY, sw, sh)];
+            
+            
+        }
+    }
+    
+    for (NSDictionary *dict  in textArray) {
+        UIImage *textImg = dict[@"image"];
+        CGRect   frame   = [dict[@"frame"] frame];
+        [textImg drawInRect:frame];
+        
+    }
+    
+    
+    UIImage *tmp = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    UIImage *image = [UIImage imageWithCGImage:tmp.CGImage scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+    clipedCallback(image);
+}
+
+-(NSMutableArray*) prepareAllTextImage:(CGFloat)drawY{
+    
+    
+    NSMutableArray *marray = [NSMutableArray array];
+    
+    for (UIView *subV in self.drawingView.subviews) {
         
         if ([subV isKindOfClass:[WBGTextToolView class]]) {
             WBGTextToolView *textLabel = (WBGTextToolView *)subV;
@@ -766,18 +821,31 @@ NSString * const kColorPanNotificaiton = @"kColorPanNotificaiton";
             CGFloat sw = textImg.size.width / selfRw;
             CGFloat sh = textImg.size.height / selfRh;
             
-            [textImg drawInRect:CGRectMake(textLabel.left/selfRw, (textLabel.top/selfRh) - drawY, sw, sh)];
+            CGRect frame = CGRectMake(textLabel.left/selfRw, (textLabel.top/selfRh) - drawY, sw, sh);
+
+            CGImageRef cgref = [textImg CGImage];
+            CIImage     *cim = [textImg CIImage];
+            
+            
+            if (cim == nil && cgref == NULL){
+                continue;
+            } else {
+                
+                NSDictionary *dict = @{
+                                       @"image" : textImg,
+                                       @"frame" : [NSValue valueWithCGRect:frame]
+                                       };
+                [marray addObject:dict];
+            }
+           
+            
         }
     }
-    
-    
-    UIImage *tmp = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    UIImage *image = [UIImage imageWithCGImage:tmp.CGImage scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
-    clipedCallback(image);
-    
+    return marray;
 }
+
+
+
 
 
 
@@ -838,20 +906,16 @@ NSString * const kColorPanNotificaiton = @"kColorPanNotificaiton";
 + (UIImage *)screenshot:(UIView *)view orientation:(UIDeviceOrientation)orientation usePresentationLayer:(BOOL)usePresentationLayer
 {
     __block CGSize targetSize = CGSizeZero;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        CGSize size = view.bounds.size;
-        targetSize = CGSizeMake(size.width * view.layer.transformScaleX, size.height *  view.layer.transformScaleY);
-    });
-    
+
+    CGSize size = view.bounds.size;
+    targetSize = CGSizeMake(size.width * view.layer.transformScaleX, size.height *  view.layer.transformScaleY);
+
     UIGraphicsBeginImageContextWithOptions(targetSize, NO, [UIScreen mainScreen].scale);
-    
+
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     CGContextSaveGState(ctx);
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [view drawViewHierarchyInRect:CGRectMake(0, 0, targetSize.width, targetSize.height) afterScreenUpdates:NO];
-    });
+    [view drawViewHierarchyInRect:CGRectMake(0, 0, targetSize.width, targetSize.height) afterScreenUpdates:NO];
     CGContextRestoreGState(ctx);
-    
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     

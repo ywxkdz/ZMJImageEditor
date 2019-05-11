@@ -65,6 +65,7 @@
     //获取绘制后生成的新图片
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    
     return newImage;
     
 }
