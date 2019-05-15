@@ -544,6 +544,11 @@ NSString * const kColorPanNotificaiton = @"kColorPanNotificaiton";
 }
 
 - (IBAction)backAction:(UIButton *)sender {
+    
+    if ([self.delegate respondsToSelector:@selector(imageEditorDidCancel:)]) {
+        [self.delegate imageEditorDidCancel:self];
+        return;
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
