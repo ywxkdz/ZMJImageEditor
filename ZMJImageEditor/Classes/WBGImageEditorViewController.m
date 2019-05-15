@@ -113,9 +113,14 @@ NSString * const kColorPanNotificaiton = @"kColorPanNotificaiton";
     self.undoButton.hidden = YES;
     
     //    self.colorPan.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 60, 100, self.colorPan.bounds.size.width, self.colorPan.bounds.size.height);
-    self.colorPan.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height-99, [UIScreen mainScreen].bounds.size.width, 50);
+//    self.colorPan.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height-99, [UIScreen mainScreen].bounds.size.width, 50
+    
+    
+    
+    CGRect frame =  CGRectMake(0, CGRectGetMaxY(self.scrollView.frame), self.view.bounds.size.width, 0);
+    self.colorPan.frame = frame;
     self.colorPan.dataSource = self.dataSource;
-    [self.view addSubview:_colorPan];
+//    [self.view addSubview:_colorPan];
     
     [self initImageScrollView];
     
