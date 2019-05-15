@@ -8,6 +8,7 @@
 #import "WBGMosicaViewController.h"
 #import "XScratchView.h"
 #import "XRGBTool.h"
+#import "UIScreen+Ext.h"
 
 @interface WBGMosicaViewController ()
 @property (nonatomic, strong) XScratchView *scratchView;
@@ -32,7 +33,12 @@
     CGFloat WIDTH = self.view.frame.size.width;
     CGFloat HEIGHT = self.view.frame.size.height;
 
-    XScratchView *scratchView = [[XScratchView alloc] initWithFrame:self.frame];
+    
+    CGFloat height = HEIGHT - 49 - [UIScreen bootomSafeMargin] - 20 - [UIScreen topSafeMargin];
+    CGFloat  width = self.image.size.width * height / self.image.size.height;
+    CGRect frame   =  CGRectMake(0,[UIScreen topSafeMargin], WIDTH, height);
+    
+    XScratchView *scratchView = [[XScratchView alloc] initWithFrame:frame];
     //    scratchView.mosaicImage = [XRGBTool getFilterMosaicImageWith:[UIImage imageNamed:@"qq.png"]];
     scratchView.surfaceImage = self.image;
     scratchView.mosaicImage = [XRGBTool getMosaicImageWith:self.image level:0];
@@ -41,7 +47,7 @@
     [self.view addSubview:scratchView];
 
     UIView *toolView = [[UIView alloc] init];
-    toolView.frame = CGRectMake(0, HEIGHT - 49, WIDTH, 49);
+    toolView.frame = CGRectMake(0, HEIGHT - 49 - [UIScreen bootomSafeMargin], WIDTH, 49);
     toolView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
     [self.view addSubview:toolView];
     _toolView = toolView;

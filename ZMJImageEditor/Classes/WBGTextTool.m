@@ -10,7 +10,7 @@
 #import "WBGTextToolView.h"
 #import "UIView+YYAdd.h"
 
-static const CGFloat kTopOffset = 0.f;
+static const CGFloat kTopOffset = 60.f;
 static const CGFloat kTextTopOffset = 20.f;
 static const NSInteger kTextMaxLimitNumber = 100;
 

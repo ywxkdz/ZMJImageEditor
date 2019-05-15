@@ -25,6 +25,7 @@
 #import "TOActivityCroppedImageProvider.h"
 #import "UIImage+CropRotate.h"
 #import "TOCroppedImageAttributes.h"
+#import "UIScreen+Ext.h"
 
 @interface TOCropViewController () <UIActionSheetDelegate, UIViewControllerTransitioningDelegate, TOCropViewDelegate>
 
@@ -239,6 +240,8 @@
         } else {
             frame.origin.y = 0;
         }
+        
+        frame.origin.y -= [UIScreen bootomSafeMargin] + 20 ;
         
         frame.size.width = CGRectGetWidth(self.view.bounds);
         frame.size.height = 44.0f;

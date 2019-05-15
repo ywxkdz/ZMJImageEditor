@@ -10,7 +10,7 @@
 
 @interface XScratchView ()
 
-/** <##> */
+/**  */
 @property (nonatomic, strong) UIImageView *surfaceImageView;
 /** <##> */
 @property (nonatomic, strong) CALayer *imageLayer;

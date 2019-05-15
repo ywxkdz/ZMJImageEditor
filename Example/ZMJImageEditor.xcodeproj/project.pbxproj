@@ -210,8 +210,7 @@
 				6003F586195388D20070C39A /* Sources */,
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
-				DF06A7BD642897C55BC3BC46 /* [CP] Embed Pods Frameworks */,
-				1604AEFDCC452111DA4CB72C /* [CP] Copy Pods Resources */,
+				A7A05CEE7C892DD2AF09DA0B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -231,7 +230,6 @@
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
 				87A42F18CDB7C9877F01CF77 /* [CP] Embed Pods Frameworks */,
-				713808C7EC77CBBC4B6FFBDA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -306,43 +304,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1604AEFDCC452111DA4CB72C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZMJImageEditor_Example/Pods-ZMJImageEditor_Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		713808C7EC77CBBC4B6FFBDA /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZMJImageEditor_Tests/Pods-ZMJImageEditor_Tests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		87A42F18CDB7C9877F01CF77 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-ZMJImageEditor_Tests/Pods-ZMJImageEditor_Tests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-ZMJImageEditor_Tests/Pods-ZMJImageEditor_Tests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FBSnapshotTestCase/FBSnapshotTestCase.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -351,21 +319,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZMJImageEditor_Tests/Pods-ZMJImageEditor_Tests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ZMJImageEditor_Tests/Pods-ZMJImageEditor_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DF06A7BD642897C55BC3BC46 /* [CP] Embed Pods Frameworks */ = {
+		A7A05CEE7C892DD2AF09DA0B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputFileListPaths = (
+			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-ZMJImageEditor_Example/Pods-ZMJImageEditor_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-ZMJImageEditor_Example/Pods-ZMJImageEditor_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/YYCategories/YYCategories.framework",
 				"${BUILT_PRODUCTS_DIR}/ZMJImageEditor/ZMJImageEditor.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYCategories.framework",
@@ -373,7 +345,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZMJImageEditor_Example/Pods-ZMJImageEditor_Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ZMJImageEditor_Example/Pods-ZMJImageEditor_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F17ABF75A67E9614DF132916 /* [CP] Check Pods Manifest.lock */ = {
