@@ -34,14 +34,25 @@
     CGFloat HEIGHT = self.view.frame.size.height;
 
     
-    CGFloat height = HEIGHT - 49 - [UIScreen bootomSafeMargin] - 20 - [UIScreen topSafeMargin];
-    CGFloat  width = self.image.size.width * height / self.image.size.height;
-    CGRect frame   =  CGRectMake(0,[UIScreen topSafeMargin], WIDTH, height);
+    CGFloat height = HEIGHT - 49 - [UIScreen bootomSafeMargin] - 60 - [UIScreen topSafeMargin];
+    CGFloat  width = WIDTH ;
     
+    
+    
+    BOOL isHeighter = height / width  > self.image.size.height / self.image.size.width;
+    
+    if (isHeighter) {
+        height = width * self.image.size.height/ self.image.size.width;
+    }else{
+        width  = height * self.image.size.width/ self.image.size.height;
+    }
+    
+    CGRect frame   =  CGRectMake(0,[UIScreen topSafeMargin], width, height);
     XScratchView *scratchView = [[XScratchView alloc] initWithFrame:frame];
     //    scratchView.mosaicImage = [XRGBTool getFilterMosaicImageWith:[UIImage imageNamed:@"qq.png"]];
     scratchView.surfaceImage = self.image;
     scratchView.mosaicImage = [XRGBTool getMosaicImageWith:self.image level:0];
+    scratchView.center      = self.view.center;
 
     _scratchView = scratchView;
     [self.view addSubview:scratchView];
