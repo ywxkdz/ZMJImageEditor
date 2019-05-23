@@ -794,7 +794,7 @@ NSString * const kColorPanNotificaiton = @"kColorPanNotificaiton";
     
     for (NSDictionary *dict  in textArray) {
         UIImage *textImg = dict[@"image"];
-        CGRect   frame   = [dict[@"frame"] frame];
+        CGRect   frame   = [dict[@"frame"] CGRectValue];
         [textImg drawInRect:frame];
         
     }
